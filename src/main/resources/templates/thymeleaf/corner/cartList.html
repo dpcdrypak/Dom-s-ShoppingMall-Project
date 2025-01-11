@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="imagetoolbar" content="no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="title" content="웹사이트">
+  <meta name="description" content="웹사이트입니다.">
+  <meta name="keywords" content="키워드,키워드,키워드">
+  <meta property="og:title" content="웹사이트">
+  <meta property="og:description" content="웹사이트입니다">
+  <meta property="og:image" content="https://웹사이트/static/images/opengraph.png">
+  <meta property="og:url" content="https://웹사이트">
+  <title>상품 정보 | emp</title>
+    <link rel="stylesheet" th:href="@{/static/css/setting.css}">
+  <link rel="stylesheet" th:href="@{/static/css/plugin.css}">
+  <link rel="stylesheet" th:href="@{/static/css/template.css}">
+  <link rel="stylesheet" th:href="@{/static/css/common.css}">
+  <link rel="stylesheet" th:href="@{/static/css/style.css}">
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+<script type="text/javascript" src="/static/js/checkbox.js"></script>
+<script type="text/javascript" src="/static/js/money.js"></script>
+<script type="text/javascript">
+function cartAdd(goodsNum , goodsPrice){
+	var stringNumber = $("#"+goodsNum).text();  // 1,000
+	var number = Number(stringNumber.replace(/,/g, '')); // 1000
+	number += 1;
+	const commaNumber = number.toLocaleString(); // 1,001
+	
+	var formData = JSON.stringify({
+		goodsNum : goodsNum,
+		qty : 1
+	});
+
+	option = {
+		type: "post",
+		url: "/item/cartAdd",
+		contentType: "application/json",
+		data:formData,
+		success :  function(result){ // w1,000,000
+			var price = $("#t_"+goodsNum).text().substring(1).replace(/,/g, "");
+			console.log(price); // 100000
+			if(result == 200){
+				$("#"+goodsNum).text(commaNumber); // 수량  1000 + 1
+				price = Number(price) + parseInt(goodsPrice);     // 	1000
+				$("#t_"+goodsNum).text(formatter.format(price));
+			}
+		},
+		error : err ,
+		complete : prodChk
+	};
+	$.ajax(option);
+}
+function prodChk(){
+	var chkLeng  = $('input[name="nums"]')
+	var cnt = 0; // 상품 수
+	var totalQty = 0; // 총 상품의 갯수
+	var totalPrice = 0; // 총 상품 금액
+	for(var i = 0; i < chkLeng.length ; i++){
+		if(chkLeng[i].checked){
+			cnt ++;
+			var stringQty = $(".cartQty:eq("+i+")").text();  // 1,000
+			var number = Number(stringQty.replace(/,/g, '')); // 1000
+			totalQty += Number(number);
+			
+			var price = $(".totalPrice:eq("+i+")").text().substring(1).replace(/,/g,"");
+			totalPrice += Number(price);		
+		}
+	}
+	var commaQty = totalQty.toLocaleString(); // 1,001
+	$("#prodCnt").text(cnt);
+	$("#totQty").text(commaQty);
+	$("#totalPrice").text(formatter.format(totalPrice));
+}
+function err(){
+	alert("로그 아웃되었습니다. 다시로그인 해주세요.");
+	window.open("loginCk.login","loginck","width=400,height=400");
+}
+function checkQty(goodsNum, goodsPrice){
+	var stringNumber = $("#"+goodsNum).text();
+	var number = Number(stringNumber.replace(/,/g, ''));
+	if(number > 1){
+		number = number - 1;
+		const commaNumber = number.toLocaleString();
+		var xhr = new XMLHttpRequest();
+		xhr.onload = function(){
+			if(xhr.status==200){
+				var price = $("#t_"+goodsNum).text().substring(1).replace(/,/g, "");
+				$("#"+goodsNum).text(commaNumber);
+				price = Number(price) - parseInt(goodsPrice);
+				$("#t_"+goodsNum).text(formatter.format(price));
+				prodChk();
+			}
+		}
+		xhr.open("GET","cartQtyDown?goodsNum="+goodsNum, true);
+		xhr.send();
+	}else{
+		alert("최소 수량은 1이어야 합니다.");
+	}	
+}
+function del1(){
+	var chk_arr = [];
+	$("input:checkbox[name='nums']:checked").each(function(){
+		chk_arr.push($(this).val());
+	});
+	/*
+		$.ajax({
+			type:,
+			url:,
+			data:formData,
+			contentType:"application/json",
+			dataType:,
+			success:function(result){},
+			error:
+		});
+	*/
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST","cartDels",true);
+	xhr.setRequestHeader("Content-Type", "application/json");
+	var formData = JSON.stringify(chk_arr);
+	xhr.onload = function(){
+		if(xhr.status == 200){
+			var result = xhr.responseText;
+			if(result == "200") location.reload(); // CSR을 할 필요 없다.. SSR을 권장
+			else alert("삭제되지 않았습니다.");
+			
+		}else{
+			alert("삭제되지 않았습니다.");
+		}
+	}
+	xhr.send(formData);
+}
+</script>
+</head>
+
+<body>
+  <!-- [S]hooms-N55 -->
+  <header class="hooms-N54" data-bid="fPM3YbfMi9" id="">
+    <div class="header-inner">
+      <div class="header-container container-lg">
+        <div class="header-left">
+          <h1 class="header-title">
+            <a class="header-logo" th:href="@{/}" title="hooms"></a>
+          </h1>
+        </div>
+        <div class="header-center">
+          <ul class="header-gnblist">
+            
+            
+            <!-- mem으로 로그인 했을때 -->
+            <th:block th:if="${session.auth != null and session.auth.grade == 'mem'}">
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/shopGoods}">
+                <span>SHOP</span>
+              </a>
+            </li>
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/item/cartList}">
+                <span>CART</span>
+              </a>
+            </li>
+           
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/item/wishList}">
+                <span>Wish</span>
+              </a>
+            </li>
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/purchase/orderList}">
+                <span>Order</span>
+              </a>
+            </li>
+            </th:block>
+            
+            <!-- emp로 로그인 했을때 -->
+            <th:block th:if="${session.auth != null and session.auth.grade == 'emp'}">
+            <li class="header-gnbitem" id="product">
+	              <a class="header-gnblink" href="javascript:void(0)">
+	                <span>PRODUCT</span>
+	              </a>
+	              <ul class="header-sublist">
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/goods/goodsWrite}">
+	                    <span>상품 등록</span>
+	                  </a>
+	                </li>
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/goods/goodsList}">
+	                    <span>상품 리스트</span>
+	                  </a>
+	                </li>
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/goods/goodsIpgo}">
+	                    <span>상품 입고 등록</span>
+	                  </a>
+	                </li>
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/goods/goodsIpgoList}">
+	                    <span>상품 입고 현황</span>
+	                  </a>
+	                </li>
+	              </ul>
+	            </li>
+	            
+	            <li class="header-gnbitem">
+              <a class="header-gnblink" href="javascript:void(0)">
+                <span>USER LIST</span>
+              </a>
+              <ul class="header-sublist">
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/memberJoin/memberList}">
+	                    <span>회원 리스트</span>
+	                  </a>
+	                </li>
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/employee/employeeList}">
+	                    <span>직원 리스트</span>
+	                  </a>
+	                </li>
+	                
+	              </ul>
+            </li>
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/purchase/purchaseList}">
+                <span>PURCHASE</span>
+              </a>
+            </li>
+           
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/inquire/goodsQuestion}">
+                <span>INQUIRE</span>
+              </a>
+            </li>
+            
+            </th:block>
+            
+            <!-- 로그인 안했을때 -->
+            <th:block th:if="${session.auth == null}">
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/shopGoods}">
+                <span>SHOP</span>
+              </a>
+            </li>
+            </th:block>
+            
+          </ul>
+        </div>
+        
+        <div class="header-right">
+          <div class="header-utils">
+    		<th:block th:if="${session.auth != null and session.auth.grade == 'mem'}">
+			<a th:href="@{/myPage/memberMyPage}" class="btn-profile header-utils-btn" title="profile"></a>
+          </th:block>
+          <th:block th:if="${session.auth != null and session.auth.grade == 'emp'}">
+			<a th:href="@{/myPage/employeeMyPage}" class="btn-profile header-utils-btn" title="profile"></a>
+          </th:block>
+          <th:block th:if="${session.auth == null}">
+          	<a th:href="@{/login}" class="btn-profile header-utils-btn" title="profile"></a>
+          </th:block>
+            <button class="btn-menu header-utils-btn" title="menu"></button>
+            <button class="btn-close header-utils-btn" title="close"></button>
+          </div>
+        </div>
+        <div class="header-search-form">
+          <div class="inputset inputset-line">
+            <button class="icon-right icon-search btn" type="button" aria-label="아이콘">
+            </button>
+            <input type="text" class="inputset-input form-control" placeholder="검색어를 입력해주세요." aria-label="내용">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <!-- mem으로 로그인 했을때 -->
+   <th:block th:if="${session.auth != null and session.auth.grade == 'mem'}">
+    <div class="header-fullmenu-dark fullmenu-top">
+      <div class="fullmenu-head container-lg">
+        <h4 class="fullmenu-title">
+          <a class="fullmenu-logo" href="javascript:void(0)" title="hooms"></a>
+        </h4>
+        <button class="fullmenu-close"></button>
+      </div>
+      <div class="fullmenu-wrapper container-lg">
+        <ul class="fullmenu-gnblist">
+           <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/shopGoods}">
+              <span>SHOP</span>
+            </a>
+          </li>
+          
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/item/cartList}">
+              <span>CART</span>
+            </a>
+          </li>
+          
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/item/wishList}">
+              <span>WISH</span>
+            </a>
+          </li>
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/purchase/orderList}">
+              <span>ORDER</span>
+            </a>
+          </li>
+      </div>
+        </ul>
+      </div>
+      </th:block>
+      
+      <!-- emp로 로그인 했을때 -->
+    	<th:block th:if="${session.auth != null and session.auth.grade == 'emp'}">
+      <div class="header-fullmenu-dark fullmenu-top">
+      <div class="fullmenu-head container-lg">
+        <h4 class="fullmenu-title">
+          <a class="fullmenu-logo" href="javascript:void(0)" title="hooms"></a>
+        </h4>
+        <button class="fullmenu-close"></button>
+      </div>
+      <div class="fullmenu-wrapper container-lg">
+        <ul class="fullmenu-gnblist">
+           <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/shopGoods}">
+              <span>PRODUCT</span>
+            </a>
+          </li>
+          
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/purchase/purchaseList}">
+              <span>PURCHASE</span>
+            </a>
+          </li>
+          
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/inquire/goodsQuestion}">
+              <span>INQUIRE</span>
+            </a>
+          </li>
+          
+      </div>
+        </ul>
+      </div>
+      </th:block>
+      
+      <!-- 로그인 안했을때 -->
+    	<th:block th:if="${session.auth == null}">
+      <div class="header-fullmenu-dark fullmenu-top">
+      <div class="fullmenu-head container-lg">
+        <h4 class="fullmenu-title">
+          <a class="fullmenu-logo" href="javascript:void(0)" title="hooms"></a>
+        </h4>
+        <button class="fullmenu-close"></button>
+      </div>
+      <div class="fullmenu-wrapper container-lg">
+        <ul class="fullmenu-gnblist">
+           <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" href="shopGoods">
+              <span>SHOP</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      </th:block>
+      
+    </div>
+    <div class="header-dim"></div>
+  </header>
+  <main class="th-layout-main ">
+    <!-- [S]hooms-N49 -->
+    <div class="hooms-N49" data-bid="aAm3zgrTrE">
+      <div class="contents-inner">
+        <div class="contents-container container-md">
+          
+          <div class="textset">
+            <p class="textset-tit">장바구니</p>
+          </div>
+		
+		<form action="/purchase/goodsBuy" method="post" >
+          <div class="tableset tableset-receipt tableset-text-top">
+            <table class="tableset-table table">
+              <colgroup>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+              </colgroup>
+              <thead class="thead-light thead-border-top">
+                <tr>
+                  <th scope="col"><input type="checkbox" id="checkBoxs" checked="checked"/></th>
+                  <th scope="col">이미지</th>
+                  <th scope="col">제품이름</th>
+                  <th scope="col">수량</th>
+                  <th scope="col">합계금액</th>
+				  <th scope="col" onclick="del1();" style="cursor: pointer; font-weight: bold; text-align: center;"> 선택 상품 삭제</th>
+				  
+			    </tr>
+              </thead>
+              
+              <tbody>
+                <tr th:each="dto : ${list}">
+                	<td><input type="checkbox" name="nums" checked="checked" th:value="${dto.goodsDTO.goodsNum}" /></td>
+                  <td class="tableset-dark">
+                    <strong>이미지</strong> 
+                    	<img th:src="|/static/upload/${dto.goodsDTO.goodsMainStoreImage}|"  width="30"/></td>
+
+                  <td class="tableset-dark td-border-bottom">
+                    <strong>제품이름</strong>
+                    	[[${dto.goodsDTO.goodsName}]]</td>
+                    	
+                  <td class="tableset-dark">
+                    <strong>수량</strong>
+                    	<a th:href="|javascript:checkQty('${dto.goodsDTO.goodsNum}','${dto.goodsDTO.goodsPrice}');|">  -  </a>
+			<spna th:id="${dto.goodsDTO.goodsNum}" class="cartQty">[[${#numbers.formatInteger(dto.cartDTO.cartQty,1,'COMMA')}]]</spna>개
+			<a th:href="|javascript:cartAdd('${dto.goodsDTO.goodsNum}','${dto.goodsDTO.goodsPrice}');|">  +  </a></td>
+                    	
+                  <td class="tableset-dark">
+                    <strong>합계금액</strong>
+                    	<span th:id="${'t_'+dto.goodsDTO.goodsNum}" class="totalPrice">
+                    	[[${#numbers.formatCurrency(dto.goodsDTO.goodsPrice * dto.cartDTO.cartQty)}]]</span>원</td>
+                    
+                    <td class="tableset-dark">
+                    <input type="button"  value="삭제"  
+				th:attr="onclick=|javascript:location.href='cartDel?goodsNums=${dto.goodsDTO.goodsNum}'|" class="btnset-cartList-del"/></td>
+				
+				
+				
+                    </form>
+                </tr>
+                
+              </tbody>
+            </table>
+          </div>
+       
+          <div class="contents-btn">
+            <input type="submit" value="구매하기" class="btnset">
+          </div>
+          <br><br>
+          <div class="contents-bottom">
+            <p class="contents-price">상품 수 : <span id="prodCnt">[[${#numbers.formatInteger(list.size(),1,'COMMA')}]]</span>개
+            <p class="contents-price">총 수량 : <span id="totQty">[[${#numbers.formatInteger(totQty,1,'COMMA')}]]</span>개
+            <p class="contents-price">전체 합계 : <span id="totalPrice">[[${#numbers.formatCurrency(totPri)}]]</span>원
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [E]hooms-N49 -->
+  </main>
+  <!-- [S]hooms-N57 -->
+  <footer class="hooms-N57" data-bid="Ppm3yBfNek">
+    <div class="footer-container container-lg">
+      <div class="footer-top">
+        <h1 class="footer-logo">
+          <a href="javascript:void(0)">
+			<img th:src="@{/static/images/pollogo.png}" alt="로고">
+          </a>
+        </h1>
+        <ul class="footer-menulist">
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>이용약관</span>
+            </a>
+          </li>
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>개인정보처리방침</span>
+            </a>
+          </li>
+          <li class="footer-menuitem">
+            <a th:href="@{/logout}">
+              <span>로그아웃</span>
+            </a>
+          </li>
+          
+          <th:block th:if="${session.auth == null or session.auth.grade == 'emp' and session.auth.grade != 'mem'}">
+          <li class="footer-menuitem">
+            <a th:href="@{/employee/employeeWrite}" >
+              <span>직원가입</span>
+            </a>
+          </li>
+        </ul>
+        <ul class="footer-snslist">
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_instagram_lightgrey.svg}" alt="인스타그램">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_youtube_lightgrey.svg}" alt="유튜브">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_facebook_lightgrey.svg}" alt="페이스북">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_kakao_lightgrey.svg}" alt="카카오톡">
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-txt">
+          <p> 서울시 금천구 벚꽃로36길 30 가산 KS타워 1409호 </p>
+          <p>
+            <span>T. 010-45**-41**</span>
+            <span>****@naver.com</span>
+          </p>
+        </div>
+        <div class="footer-txt">
+          <p>2022 BY TEMPLATEHOUSE. ALL RIGHTS RESEVED</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- [E]hooms-N57 -->
+   <script th:src="@{/static/js/setting.js}"></script>
+<script th:src="@{/static/js/plugin.js}"></script>
+<script th:src="@{/static/js/template.js}"></script>
+<script th:src="@{/static/js/common.js}"></script>
+<script th:src="@{/static/js/script.js}"></script>
+</body>

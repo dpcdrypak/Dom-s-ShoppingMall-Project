@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="imagetoolbar" content="no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="title" content="웹사이트">
+  <meta name="description" content="웹사이트입니다.">
+  <meta name="keywords" content="키워드,키워드,키워드">
+  <meta property="og:title" content="웹사이트">
+  <meta property="og:description" content="웹사이트입니다">
+  <meta property="og:image" content="https://웹사이트/static/images/opengraph.png">
+  <meta property="og:url" content="https://웹사이트">
+  <title>상품 정보 | emp</title>
+    <link rel="stylesheet" th:href="@{/static/css/setting.css}">
+  <link rel="stylesheet" th:href="@{/static/css/plugin.css}">
+  <link rel="stylesheet" th:href="@{/static/css/template.css}">
+  <link rel="stylesheet" th:href="@{/static/css/common.css}">
+  <link rel="stylesheet" th:href="@{/static/css/style.css}">
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	itemList();
+});
+function itemList(page){
+	$.ajax({
+		type:"post",
+		url:"goodsItem",
+		data: {"page": page, "searchWord" : $("#searchWord").val()},
+		success:function(result){
+            console.log("Result from server:", result);
+			var item = "";
+			item +=	'<main class="th-layout-main ">';
+			item +=	'<div class="hooms-N49" data-bid="aAm3zgrTrE">';
+			item +=	'<div class="contents-inner">';
+			item +=	'<br><br><div class="contents-container container-md"><div class="textset"> <p class="textset-tit">상품 정보</p></div>';
+
+			item +=	'	<tr><td colspan="5">';
+			item +=	'		검색 : <input type="search" name="searchWord" id="searchWord" value="'+result.searchWord+'" />';
+			item +=	'  			  <button onclick="itemList(' + result.page + ')" class="btnset-cartList-del">검색</button>';
+			item +=	'	</td></tr>';
+			item +=	'<div class="tableset tableset-receipt tableset-text-top">';
+			item +=	'<table class="tableset-table table">';
+			item +=	'<colgroup>';
+			item +=	'<col>';
+			item +=	'<col>';
+			item +=	'<col>';
+			item +=	'<col>';
+			item +=	'</colgroup>';
+			item +=	'<thead class="thead-light thead-border-top">';
+			item +=	'<tr>';
+			item +=	'<th scope="col">번호</th>';
+			item +=	'<th scope="col">상품 번호</th>';
+			item +=	'<th scope="col">상품명</th>';
+			item +=	'<th scope="col">상품 가격</th></tr>';  
+			item +=	'</thead>';
+
+			item +=	'<tbody>';
+			$.each(result.list, function(idx, dto){
+				item +=	'	<tr>';
+				item +=	'		<td class="tableset-dark">'+(idx + 1)
+		             +'</td><td class="tableset-dark"><a href="javascript:goodsItem(\''+ dto.goodsNum +'\',\''+dto.goodsName +'\')">'+ dto.goodsNum + '</a>'
+		             +'</td><td class="tableset-dark"><a href="javascript:goodsItem(\''+ dto.goodsNum +'\',\''+dto.goodsName +'\')">'+ dto.goodsName + '</a>'
+		             +'</td><td class="tableset-dark">'+ dto.goodsPrice+'</td>';
+				item +=	'	</tr>';
+			})
+			item +=	'<tr align="center"><td colspan="6">';
+			if(result.page <= 1){
+				item +=	'[이전]';
+			}else{
+				item +=	'<a href="javascript:itemList('+ (result.page - 1) +')">[이전]</a>';
+			}
+			var startPage = result.startPage;
+			var endPage = result.endPage;
+			while(startPage <= endPage){
+				item +=	'<a href="javascript:itemList('+ startPage +')">[' + startPage + ']</a>';				
+				startPage++;
+			}
+			if(result.page >= result.maxPage){
+			item +=	'[다음]';
+			}else{
+				item +=	'<a href="javascript:itemList('+ (result.page + 1) +')">[다음]</a>';
+			}
+			item +=	'</tr></tbody>';
+			item +=	'</table>';
+			item +=	'</div>';
+			item +=	'</div>';
+			item +=	'</div>';
+			item +=	'</div>';
+			item +=	'</main>';
+
+			$("#goodsList").html(item);
+		},
+		error:function(){
+			alert("서버오류");
+		}
+	});
+}
+//상품번호나 상품이름을 클릭하면 부모 페이지에 값이 전달되는 함수를 만듭니다.
+function goodsItem(goodsNum, goodsName){
+	$(opener.document).find("#goodsNum").val(goodsNum);
+	$(opener.document).find("#goodsName").val(goodsName);
+	//자신의 창은 닫습니다.
+	window.self.close();
+}
+</script>
+</head>
+
+<body>
+  <!-- [S]hooms-N55 -->
+  <header class="hooms-N54" data-bid="fPM3YbfMi9" id="">
+    <div class="header-inner">
+      <div class="header-container container-lg">
+        <div class="header-left">
+          <h1 class="header-title">
+            <a class="header-logo" th:href="@{/}" title="hooms"></a>
+          </h1>
+        </div>
+      
+    </div>
+    <div class="header-dim"></div>
+  </header>
+  <!-- [E]hooms-N55 -->
+  
+	
+              <span id="goodsList"></span>
+          
+       
+  <!-- [S]hooms-N57 -->
+  <footer class="hooms-N57" data-bid="Ppm3yBfNek">
+    <div class="footer-container container-lg">
+      <div class="footer-top">
+        <h1 class="footer-logo">
+          <a href="javascript:void(0)">
+			<img th:src="@{/static/images/pollogo.png}" alt="로고">
+          </a>
+        </h1>
+        <ul class="footer-menulist">
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>이용약관</span>
+            </a>
+          </li>
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>개인정보처리방침</span>
+            </a>
+          </li>
+          <li class="footer-menuitem">
+            <a th:href="@{/logout}">
+              <span>로그아웃</span>
+            </a>
+          </li>
+          
+          <th:block th:if="${session.auth == null or session.auth.grade == 'emp' and session.auth.grade != 'mem'}">
+          <li class="footer-menuitem">
+            <a th:href="@{/employee/employeeWrite}" >
+              <span>직원가입</span>
+            </a>
+          </li>
+        </ul>
+        <ul class="footer-snslist">
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_instagram_lightgrey.svg}" alt="인스타그램">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_youtube_lightgrey.svg}" alt="유튜브">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_facebook_lightgrey.svg}" alt="페이스북">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_kakao_lightgrey.svg}" alt="카카오톡">
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-txt">
+          <p> 서울시 금천구 벚꽃로36길 30 가산 KS타워 1409호 </p>
+          <p>
+            <span>T. 010-45**-41**</span>
+            <span>****@naver.com</span>
+          </p>
+        </div>
+        <div class="footer-txt">
+          <p>2022 BY TEMPLATEHOUSE. ALL RIGHTS RESEVED</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- [E]hooms-N57 -->
+   <script th:src="@{/static/js/setting.js}"></script>
+<script th:src="@{/static/js/plugin.js}"></script>
+<script th:src="@{/static/js/template.js}"></script>
+<script th:src="@{/static/js/common.js}"></script>
+<script th:src="@{/static/js/script.js}"></script>
+</body>

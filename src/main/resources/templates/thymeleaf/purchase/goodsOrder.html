@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="imagetoolbar" content="no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="title" content="웹사이트">
+  <meta name="description" content="웹사이트입니다.">
+  <meta name="keywords" content="키워드,키워드,키워드">
+  <meta property="og:title" content="웹사이트">
+  <meta property="og:description" content="웹사이트입니다">
+  <meta property="og:image" content="https://웹사이트/static/images/opengraph.png">
+  <meta property="og:url" content="https://웹사이트">
+  <title>주문정보 | 미니프로젝트</title>
+  <link rel="stylesheet" href="/static/css/setting.css">
+  <link rel="stylesheet" href="/static/css/plugin.css">
+  <link rel="stylesheet" href="/static/css/template.css">
+  <link rel="stylesheet" href="/static/css/common.css">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="/static/js/daumAddressScript.js"></script>
+</head>
+
+<body>
+  <!-- [S]hooms-N55 -->
+ <header class="hooms-N54" data-bid="fPM3YbfMi9" id="">
+    <div class="header-inner">
+      <div class="header-container container-lg">
+        <div class="header-left">
+          <h1 class="header-title">
+            <a class="header-logo" th:href="@{/}" title="hooms"></a>
+          </h1>
+        </div>
+        <div class="header-center">
+          <ul class="header-gnblist">
+            
+            
+            <!-- mem으로 로그인 했을때 -->
+            <th:block th:if="${session.auth != null and session.auth.grade == 'mem'}">
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/shopGoods}">
+                <span>SHOP</span>
+              </a>
+            </li>
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/item/cartList}">
+                <span>CART</span>
+              </a>
+            </li>
+           
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/item/wishList}">
+                <span>Wish</span>
+              </a>
+            </li>
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/purchase/orderList}">
+                <span>Order</span>
+              </a>
+            </li>
+            </th:block>
+            
+            <!-- emp로 로그인 했을때 -->
+            <th:block th:if="${session.auth != null and session.auth.grade == 'emp'}">
+            <li class="header-gnbitem" id="product">
+	              <a class="header-gnblink" href="javascript:void(0)">
+	                <span>PRODUCT</span>
+	              </a>
+	              <ul class="header-sublist">
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/goods/goodsWrite}">
+	                    <span>상품 등록</span>
+	                  </a>
+	                </li>
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/goods/goodsList}">
+	                    <span>상품 리스트</span>
+	                  </a>
+	                </li>
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/goods/goodsIpgo}">
+	                    <span>상품 입고 등록</span>
+	                  </a>
+	                </li>
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/goods/goodsIpgoList}">
+	                    <span>상품 입고 현황</span>
+	                  </a>
+	                </li>
+	              </ul>
+	            </li>
+	            
+	            <li class="header-gnbitem">
+              <a class="header-gnblink" href="javascript:void(0)">
+                <span>USER LIST</span>
+              </a>
+              <ul class="header-sublist">
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/memberJoin/memberList}">
+	                    <span>회원 리스트</span>
+	                  </a>
+	                </li>
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/employee/employeeList}">
+	                    <span>직원 리스트</span>
+	                  </a>
+	                </li>
+	                
+	              </ul>
+            </li>
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/purchase/purchaseList}">
+                <span>PURCHASE</span>
+              </a>
+            </li>
+           
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/inquire/goodsQuestion}">
+                <span>INQUIRE</span>
+              </a>
+            </li>
+            
+            </th:block>
+            
+            <!-- 로그인 안했을때 -->
+            <th:block th:if="${session.auth == null}">
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/shopGoods}">
+                <span>SHOP</span>
+              </a>
+            </li>
+            </th:block>
+            
+          </ul>
+        </div>
+        
+        <div class="header-right">
+          <div class="header-utils">
+    		<th:block th:if="${session.auth != null and session.auth.grade == 'mem'}">
+			<a th:href="@{/myPage/memberMyPage}" class="btn-profile header-utils-btn" title="profile"></a>
+          </th:block>
+          <th:block th:if="${session.auth != null and session.auth.grade == 'emp'}">
+			<a th:href="@{/myPage/employeeMyPage}" class="btn-profile header-utils-btn" title="profile"></a>
+          </th:block>
+          <th:block th:if="${session.auth == null}">
+          	<a th:href="@{/login}" class="btn-profile header-utils-btn" title="profile"></a>
+          </th:block>
+            <button class="btn-menu header-utils-btn" title="menu"></button>
+            <button class="btn-close header-utils-btn" title="close"></button>
+          </div>
+        </div>
+        <div class="header-search-form">
+          <div class="inputset inputset-line">
+            <button class="icon-right icon-search btn" type="button" aria-label="아이콘">
+            </button>
+            <input type="text" class="inputset-input form-control" placeholder="검색어를 입력해주세요." aria-label="내용">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <!-- mem으로 로그인 했을때 -->
+   <th:block th:if="${session.auth != null and session.auth.grade == 'mem'}">
+    <div class="header-fullmenu-dark fullmenu-top">
+      <div class="fullmenu-head container-lg">
+        <h4 class="fullmenu-title">
+          <a class="fullmenu-logo" href="javascript:void(0)" title="hooms"></a>
+        </h4>
+        <button class="fullmenu-close"></button>
+      </div>
+      <div class="fullmenu-wrapper container-lg">
+        <ul class="fullmenu-gnblist">
+           <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/shopGoods}">
+              <span>SHOP</span>
+            </a>
+          </li>
+          
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/item/cartList}">
+              <span>CART</span>
+            </a>
+          </li>
+          
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/item/wishList}">
+              <span>WISH</span>
+            </a>
+          </li>
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/purchase/orderList}">
+              <span>ORDER</span>
+            </a>
+          </li>
+      </div>
+        </ul>
+      </div>
+      </th:block>
+      
+      <!-- emp로 로그인 했을때 -->
+    	<th:block th:if="${session.auth != null and session.auth.grade == 'emp'}">
+      <div class="header-fullmenu-dark fullmenu-top">
+      <div class="fullmenu-head container-lg">
+        <h4 class="fullmenu-title">
+          <a class="fullmenu-logo" href="javascript:void(0)" title="hooms"></a>
+        </h4>
+        <button class="fullmenu-close"></button>
+      </div>
+      <div class="fullmenu-wrapper container-lg">
+        <ul class="fullmenu-gnblist">
+           <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/shopGoods}">
+              <span>PRODUCT</span>
+            </a>
+          </li>
+          
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/purchase/purchaseList}">
+              <span>PURCHASE</span>
+            </a>
+          </li>
+          
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/inquire/goodsQuestion}">
+              <span>INQUIRE</span>
+            </a>
+          </li>
+          
+      </div>
+        </ul>
+      </div>
+      </th:block>
+      
+      <!-- 로그인 안했을때 -->
+    	<th:block th:if="${session.auth == null}">
+      <div class="header-fullmenu-dark fullmenu-top">
+      <div class="fullmenu-head container-lg">
+        <h4 class="fullmenu-title">
+          <a class="fullmenu-logo" href="javascript:void(0)" title="hooms"></a>
+        </h4>
+        <button class="fullmenu-close"></button>
+      </div>
+      <div class="fullmenu-wrapper container-lg">
+        <ul class="fullmenu-gnblist">
+           <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" href="shopGoods">
+              <span>SHOP</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      </th:block>
+      
+    </div>
+    <div class="header-dim"></div>
+  </header>
+  <!-- [E]hooms-N55 -->
+  <main class="th-layout-main ">
+    <!-- [S]hooms-N43 -->
+    <div class="hooms-N43">
+  <div class="contents-inner">
+    <div class="contents-container container-md">
+      <div class="textset textset-h2">
+        <h2 class="textset-tit">주문서</h2>
+        <p class="textset-desc">배송/결제 정보를 정확히 입력해주세요.</p>
+      </div>
+      <div class="tableset tableset-receipt tableset-text-top">
+        <table class="tableset-table table">
+          <thead>
+            <tr>
+              <th>상품 대표 이미지</th>
+              <th>주문 상품 정보</th>
+              <th>수량/상품금액</th>
+              <th>금액</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="dto : ${list}">
+              <td>
+                <img th:src="|/static/upload/${dto.goodsDTO.goodsMainStoreImage}|" alt="상품 이미지" width="30"/>
+              </td>
+              <td>[[${dto.goodsDTO.goodsName}]]</td>
+              <td>[[${dto.cartDTO.cartQty}]] / [[${dto.goodsDTO.goodsPrice}]]</td>
+              <td>[[${dto.goodsDTO.goodsPrice * dto.cartDTO.cartQty}]]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- [E]hooms-N43 -->
+    <!-- [S]hooms-N44 -->
+    <form action="goodsOrder" method="post">
+    <div class="hooms-N44" data-bid="BCM3zGqfSY">
+    <input type="hidden" name="goodsNums" th:value="${goodsNums}" />
+<input type="hidden" name="totalPaymentPrice" th:value="${sumPrice + deliveryCost}" />
+<input type="hidden" name="purchaseName"  th:value= "${list[0].goodsDTO.goodsName + ' 외' + (list.size() - 1) + '개' }" />
+      <div class="contents-inner">
+        <div class="contents-container container-md">
+          <div class="textset">
+            <h2 class="textset-tit">배송정보</h2>
+          </div>
+          <div class="contents-form">
+            <div class="contents-form-top">
+              <div class="inputset inputset-lg inputset-label">
+                <label>
+                  <h6 class="inputset-tit"> 받는 사람
+                  </h6>
+                  <input type="text" name="deliveryName" class="inputset-input form-control" placeholder="받는 사람을 입력해주세요." aria-label="내용" >
+                </label>
+              </div>
+              <div class="inputset inputset-lg inputset-label">
+                <label>
+                  <h6 class="inputset-tit"> 연락처
+                  </h6>
+                   <input type="tel" name="deliveryPhone" class="inputset-input form-control" placeholder="이메일 주소를 입력해주세요." aria-label="내용" >
+                </label>
+              </div>
+             
+              <div class="inputset inputset-lg inputset-label contents-address">
+                <label>
+                  <h6 class="inputset-tit"> 배송지 정보<span>*</span>
+                  </h6>
+                  <div class="contents-address-btn">
+                    <input type="text" name="deliveryAddr" id="sample4_roadAddress" 
+						onclick="execDaumPostcode();" readonly="readonly"
+						 class="inputset-input form-control" placeholder="주소 입력" aria-label="내용">
+                    <button type="button" class="btnset btnset-line btnset-lg fileset-btn-upload" onclick="execDaumPostcode();">우편번호 검색</button>
+                  </div>
+                </label>
+                <label>
+                <input type="text" name="deliveryAddrDetail"
+                  class="inputset-input form-control" placeholder="상세주소를 입력해주세요." aria-label="내용" >
+                  <input type="text" name="deliveryPost"  id="sample4_postcode"
+						readonly="readonly" class="inputset-input form-control" aria-label="내용"  disabled="">
+                </label>
+              </div>
+              <div class="contents-address">
+                <label class="labelset">
+                  <h6 class="labelset-tit">배송 시 요청사항</h6>
+                </label>
+                <ul>
+                  <li> · 배송일은 주문하신 상품과 지역 시공 가능 인력을 고려하여 가장 빠른 날짜로 정해집니다. </li>
+                  <li> · 배정된 배송일은 주문 당일 알림톡으로 발송됩니다. </li>
+                  <li> · 만약 주문일의 익일 15시까지 알림톡을 수신하지 못한 경우, 고객센터(02-123-4567)로 연락해주세요. </li>
+                </ul>
+                <div class="inputset inputset-lg inputset-label">
+                  <label>
+                    <h6 class="inputset-tit"> 배송 메세지<span>*</span>
+                    </h6>
+                    <input type="text" name="message" class="inputset-textarea" placeholder="100자 이내로 작성해주세요.">
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="contents-form-bottom">
+              <div class="checkset">
+                <input id="checkset-a-1-1" class="checkset-input input-fill" type="checkbox" value="">
+                <label class="checkset-label" for="checkset-a-1-1"></label>
+                <span class="checkset-text">위 내용을 읽었으며, 내용에 동의합니다. (필수)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [E]hooms-N44 -->
+    <!-- [S]hooms-N45 -->
+    <div class="hooms-N45" data-bid="LEm3ZGqFVt">
+      <div class="contents-inner">
+        <div class="contents-container container-md">
+          <div class="textset">
+            <h2 class="textset-tit">결제 정보</h2>
+          </div>
+          <div class="contents-price"> 총 금액 <span>[[${#numbers.formatCurrency(sumPrice)}]]원</span></div>
+          <div class="contents-price"> 총 배송비 <span th:if="${deliveryCost == 0}">무료배송</span>
+					<span th:if="${deliveryCost != 0}">[[${#numbers.formatCurrency(deliveryCost)}]]원</span></div>
+          <div class="contents-price"> 총 결제 금액 <span>[[${#numbers.formatCurrency(sumPrice + deliveryCost)}]]원</span></div>
+          <div class="contents-group">
+            <p class="contents-name">결제수단</p>
+            <div class="tabset tabset-brick">
+              <ul class="tabset-list tabset-sm tabset-fill">
+                <li class="tabset-item">
+                  <a class="tabset-link" href="javascript:void(0)">
+                    <span>신용카드</span>
+                  </a>
+                </li>
+                <li class="tabset-item">
+                  <a class="tabset-link" href="javascript:void(0)">
+                    <span>무통장 입금</span>
+                  </a>
+                </li>
+                <li class="tabset-item">
+                  <a class="tabset-link" href="javascript:void(0)">
+                    <span>카카오페이</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="contents-group">
+            <p class="contents-name">결제 전 확인사항</p>
+            <div class="contents-board"> 1. 고객의 단순한 변심으로 교환, 반품 및 환불을 요구할 때 수반되는 배송비는 고객님께서 부담하셔야합니다. <br> 2. 상품을 개봉했거나 설치한 후에는 상품의 재판매가 불가능하므로 고객님의 변심에 대한 교환, 반품이 불가능함을 양지해 주시기 바랍니다. </div>
+            <div class="checkset">
+              <input id="checkset-a-1-1" class="checkset-input input-fill" type="checkbox" value="">
+              <label class="checkset-label" for="checkset-a-1-1"></label>
+              <span class="checkset-text">위 내용을 읽었으며, 내용에 동의합니다. (필수)</span>
+            </div>
+          </div>
+          <div class="contents-btn">
+            <input type="submit" value="구매하기" class="btnset btnset-lg"/>
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+    <!-- [E]hooms-N45 -->
+  </main>
+  <!-- [S]hooms-N57 -->
+  <footer class="hooms-N57" data-bid="Ppm3yBfNek">
+    <div class="footer-container container-lg">
+      <div class="footer-top">
+        <h1 class="footer-logo">
+          <a href="javascript:void(0)">
+			<img th:src="@{/static/images/pollogo.png}" alt="로고">
+          </a>
+        </h1>
+        <ul class="footer-menulist">
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>이용약관</span>
+            </a>
+          </li>
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>개인정보처리방침</span>
+            </a>
+          </li>
+          <li class="footer-menuitem">
+            <a th:href="@{/logout}">
+              <span>로그아웃</span>
+            </a>
+          </li>
+          
+          <th:block th:if="${session.auth == null or session.auth.grade == 'emp' and session.auth.grade != 'mem'}">
+          <li class="footer-menuitem">
+            <a th:href="@{/employee/employeeWrite}" >
+              <span>직원가입</span>
+            </a>
+          </li>
+        </ul>
+        <ul class="footer-snslist">
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_instagram_lightgrey.svg}" alt="인스타그램">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_youtube_lightgrey.svg}" alt="유튜브">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_facebook_lightgrey.svg}" alt="페이스북">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_kakao_lightgrey.svg}" alt="카카오톡">
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-txt">
+          <p> 서울시 금천구 벚꽃로36길 30 가산 KS타워 1409호 </p>
+          <p>
+            <span>T. 010-45**-41**</span>
+            <span>****@naver.com</span>
+          </p>
+        </div>
+        <div class="footer-txt">
+          <p>2022 BY TEMPLATEHOUSE. ALL RIGHTS RESEVED</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- [E]hooms-N57 -->
+  <script src="/static/js/setting.js"></script>
+  <script src="/static/js/plugin.js"></script>
+  <script src="/static/js/template.js"></script>
+  <script src="/static/js/common.js"></script>
+  <script src="/static/js/script.js"></script>
+</body>

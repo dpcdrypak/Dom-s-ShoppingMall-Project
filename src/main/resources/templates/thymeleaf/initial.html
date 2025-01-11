@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="imagetoolbar" content="no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="title" content="웹사이트">
+  <meta name="description" content="웹사이트입니다.">
+  <meta name="keywords" content="키워드,키워드,키워드">
+  <meta property="og:title" content="웹사이트">
+  <meta property="og:description" content="웹사이트입니다">
+  <meta property="og:image" content="/static/images/opengraph.png">
+  <meta property="og:url" content="https://웹사이트">
+  <title>첫페이지 | 미니프로젝트</title>
+  <link rel="stylesheet" th:href="@{/static/css/setting.css}">
+  <link rel="stylesheet" th:href="@{/static/css/plugin.css}">
+  <link rel="stylesheet" th:href="@{/static/css/template.css}">
+  <link rel="stylesheet" th:href="@{/static/css/common.css}">
+  <link rel="stylesheet" th:href="@{/static/css/style.css}">
+</head>
+
+<body>
+  <!-- [S]hooms-N54 -->
+  <header class="hooms-N54" data-bid="fPM3YbfMi9" id="">
+    <div class="header-inner">
+      <div class="header-container container-lg">
+        <div class="header-left">
+          <h1 class="header-title">
+            <a class="header-logo" th:href="@{/}" title="hooms"></a>
+          </h1>
+        </div>
+        <div class="header-center">
+          <ul class="header-gnblist">
+            
+            
+            <!-- mem으로 로그인 했을때 -->
+            <th:block th:if="${session.auth != null and session.auth.grade == 'mem'}">
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/shopGoods}">
+                <span>SHOP</span>
+              </a>
+            </li>
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/item/cartList}">
+                <span>CART</span>
+              </a>
+            </li>
+           
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/item/wishList}">
+                <span>Wish</span>
+              </a>
+            </li>
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/purchase/orderList}">
+                <span>Order</span>
+              </a>
+            </li>
+            </th:block>
+            
+            <!-- emp로 로그인 했을때 -->
+            <th:block th:if="${session.auth != null and session.auth.grade == 'emp'}">
+            <li class="header-gnbitem" id="product">
+	              <a class="header-gnblink" href="javascript:void(0)">
+	                <span>PRODUCT</span>
+	              </a>
+	              <ul class="header-sublist">
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/goods/goodsWrite}">
+	                    <span>상품 등록</span>
+	                  </a>
+	                </li>
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/goods/goodsList}">
+	                    <span>상품 리스트</span>
+	                  </a>
+	                </li>
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/goods/goodsIpgo}">
+	                    <span>상품 입고 등록</span>
+	                  </a>
+	                </li>
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/goods/goodsIpgoList}">
+	                    <span>상품 입고 현황</span>
+	                  </a>
+	                </li>
+	              </ul>
+	            </li>
+	            
+	            <li class="header-gnbitem">
+              <a class="header-gnblink" href="javascript:void(0)">
+                <span>USER LIST</span>
+              </a>
+              <ul class="header-sublist">
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/memberJoin/memberList}">
+	                    <span>회원 리스트</span>
+	                  </a>
+	                </li>
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/employee/employeeList}">
+	                    <span>직원 리스트</span>
+	                  </a>
+	                </li>
+	                
+	              </ul>
+            </li>
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/purchase/purchaseList}">
+                <span>PURCHASE</span>
+              </a>
+            </li>
+           
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/inquire/goodsQuestion}">
+                <span>INQUIRE</span>
+              </a>
+            </li>
+            
+            </th:block>
+            
+            <!-- 로그인 안했을때 -->
+            <th:block th:if="${session.auth == null}">
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/shopGoods}">
+                <span>SHOP</span>
+              </a>
+            </li>
+            </th:block>
+            
+          </ul>
+        </div>
+        
+        <div class="header-right">
+          <div class="header-utils">
+    		<th:block th:if="${session.auth != null and session.auth.grade == 'mem'}">
+			<a th:href="@{/myPage/memberMyPage}" class="btn-profile header-utils-btn" title="profile"></a>
+          </th:block>
+          <th:block th:if="${session.auth != null and session.auth.grade == 'emp'}">
+			<a th:href="@{/myPage/employeeMyPage}" class="btn-profile header-utils-btn" title="profile"></a>
+          </th:block>
+          <th:block th:if="${session.auth == null}">
+          	<a th:href="@{/login}" class="btn-profile header-utils-btn" title="profile"></a>
+          </th:block>
+            <button class="btn-menu header-utils-btn" title="menu"></button>
+            <button class="btn-close header-utils-btn" title="close"></button>
+          </div>
+        </div>
+        <div class="header-search-form">
+          <div class="inputset inputset-line">
+            <button class="icon-right icon-search btn" type="button" aria-label="아이콘">
+            </button>
+            <input type="text" class="inputset-input form-control" placeholder="검색어를 입력해주세요." aria-label="내용">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <!-- mem으로 로그인 했을때 -->
+   <th:block th:if="${session.auth != null and session.auth.grade == 'mem'}">
+    <div class="header-fullmenu-dark fullmenu-top">
+      <div class="fullmenu-head container-lg">
+        <h4 class="fullmenu-title">
+          <a class="fullmenu-logo" href="javascript:void(0)" title="hooms"></a>
+        </h4>
+        <button class="fullmenu-close"></button>
+      </div>
+      <div class="fullmenu-wrapper container-lg">
+        <ul class="fullmenu-gnblist">
+           <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/shopGoods}">
+              <span>SHOP</span>
+            </a>
+          </li>
+          
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/item/cartList}">
+              <span>CART</span>
+            </a>
+          </li>
+          
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/item/wishList}">
+              <span>WISH</span>
+            </a>
+          </li>
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/purchase/orderList}">
+              <span>ORDER</span>
+            </a>
+          </li>
+      </div>
+        </ul>
+      </div>
+      </th:block>
+      
+      <!-- emp로 로그인 했을때 -->
+    	<th:block th:if="${session.auth != null and session.auth.grade == 'emp'}">
+      <div class="header-fullmenu-dark fullmenu-top">
+      <div class="fullmenu-head container-lg">
+        <h4 class="fullmenu-title">
+          <a class="fullmenu-logo" href="javascript:void(0)" title="hooms"></a>
+        </h4>
+        <button class="fullmenu-close"></button>
+      </div>
+      <div class="fullmenu-wrapper container-lg">
+        <ul class="fullmenu-gnblist">
+           <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/shopGoods}">
+              <span>PRODUCT</span>
+            </a>
+          </li>
+          
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/purchase/purchaseList}">
+              <span>PURCHASE</span>
+            </a>
+          </li>
+          
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/inquire/goodsQuestion}">
+              <span>INQUIRE</span>
+            </a>
+          </li>
+          
+      </div>
+        </ul>
+      </div>
+      </th:block>
+      
+      <!-- 로그인 안했을때 -->
+    	<th:block th:if="${session.auth == null}">
+      <div class="header-fullmenu-dark fullmenu-top">
+      <div class="fullmenu-head container-lg">
+        <h4 class="fullmenu-title">
+          <a class="fullmenu-logo" href="javascript:void(0)" title="hooms"></a>
+        </h4>
+        <button class="fullmenu-close"></button>
+      </div>
+      <div class="fullmenu-wrapper container-lg">
+        <ul class="fullmenu-gnblist">
+           <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" href="shopGoods">
+              <span>SHOP</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      </th:block>
+      
+    </div>
+    <div class="header-dim"></div>
+  </header>
+  <!-- [E]hooms-N54 -->
+  <main class="th-layout-main ">
+    <!-- [S]hooms-N1 -->
+    <div class="hooms-N1" data-bid="NeM3YbFmN1" id="">
+      <div class="contents-container">
+        <div class="contents-swiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide"><img class="contents-backimg img-pc" th:src="@{/static/images/mainImage1.png}"><img class="contents-backimg img-mobile" th:src="@{/static/images/img_mainvisual_mobile_01.png}" alt="배너 모바일 이미지">
+              <div class="contents-slide-group">
+                <h2 class="contents-title" style="color: rgb(0, 0, 0);">Dom's Studio</h2>
+                <p class="contents-text" style="color: rgb(0, 0, 0);">여러분들을 제 차고이자 아지트인 Dom's Studio에 초대합니다.<br>나만의 드림카를 찾아 보세요.</p><a class="contents-link" href="javascript:void(0)">Learn more</a>
+              </div>
+            </div>
+            <div class="swiper-slide"><img class="contents-backimg img-pc" th:src="@{/static/images/mainImage2.png}"><img class="contents-backimg img-mobile" th:src="@{/static/images/img_mainvisual_mobile_02.png}" alt="배너 모바일 이미지">
+              <div class="contents-slide-group">
+                <h2 class="contents-title" style="font-family: var(--ff-ko2); font-size: var(--fs-h1); color: rgb(0, 0, 0);">Dom's Studio</h2>
+                <p class="contents-text" style="color: rgb(0, 0, 0);">여러분들을 제 차고이자 아지트인 Dom's Studio에 초대합니다.<br>나만의 드림카를 찾아 보세요.</p><a class="contents-link" href="javascript:void(0)">Learn more</a>
+              </div>
+            </div>
+            <div class="swiper-slide"><img class="contents-backimg img-pc" th:src="@{/static/images/mainImage3.png}"><img class="contents-backimg img-mobile" th:src="@{/static/images/img_mainvisual_mobile_03.png}" alt="배너 모바일 이미지">
+              <div class="contents-slide-group">
+                <h2 class="contents-title" style="font-family: var(--ff-ko2); font-size: var(--fs-h1); color: rgb(0, 0, 0);">Dom's Studio</h2>
+                <p class="contents-text" style="color: rgb(0, 0, 0);">여러분들을 제 차고이자 아지트인 Dom's Studio에 초대합니다.<br>나만의 드림카를 찾아 보세요.</p><a class="contents-link" href="javascript:void(0)">Learn more</a>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+          <div class="contents-control">
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-pause"><img src="/static/icons/ico_pause.svg" alt="스와이퍼 멈춤버튼"></div>
+            <div class="swiper-button-play"><img src="/static/icons/ico_play.svg" alt="스와이퍼 재생버튼"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [E]hooms-N1 -->
+    <!-- [S]hooms-N3 -->
+    <div class="hooms-N3" data-bid="AGM3YBFMrQ" id="">
+      <div class="contents-container container-md">
+        <div class="contents-group">
+          <div class="contents-left">
+            <div class="textset textset-h2">
+              <h2 class="textset-tit" style="font-size: 65px; line-height: 1px;">Dom's Studio</h2>
+            </div>
+            <div class="textset">
+              <h5 class="textset-tit" style="font-size: 22px;">사람들은 저마다 꿈, 로망, 목표 같은 것들을 가집니다.</h5>
+              <p class="textset-desc">여러분은 혹시 들리십니까?​&nbsp;​<br>신나는 음악과 함께, 강력한 엔진, 배기음, 타이어 소리가.</p>
+            </div>
+          </div>
+          <div class="contents-right"><img th:src="@{/static/images/car1.png}">
+            <div class="contents-history-group">
+              <ul class="contents-historylist">
+                <li class="contents-historyitem"><img class="contents-backimg" th:src="@{/static/images/car2.png}"><span class="contents-historytext"><strong>Inspiration</strong></span></li>
+                <li class="contents-historyitem"><img class="contents-backimg" th:src="@{/static/images/car3.png}"><span class="contents-historytext"><strong>Craftsmanship</strong></span></li>
+                <li class="contents-historyitem"><img class="contents-backimg" th:src="@{/static/images/car4.png}"><span class="contents-historytext"><strong>Elegance</strong></span></li>
+                <li class="contents-historyitem"><img class="contents-backimg" th:src="@{/static/images/car5.png}"><span class="contents-historytext">Life</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [E]hooms-N3 -->
+    <!-- [S]hooms-N4 -->
+    <div class="hooms-N4" data-bid="KcM3ybFMvx" id="">
+      <div class="contents-container container-md">
+        <ul class="contents-imglist">
+          <li class="contents-imgitem">
+            <img th:src="@{/static/images/car6.png}" alt="">
+          </li>
+          <li class="contents-imgitem">
+            <img th:src="@{/static/images/car7.png}" alt="">
+          </li>
+        </ul>
+        <div class="contents-right">
+          <div class="textset textset-h2">
+            <span class="textset-name">About us</span>
+            <h2 class="textset-tit">Timeless Sophisticated DESIGN </h2>
+          </div>
+          <div class="contents-textgroup">
+            <div class="textset">
+              <p class="textset-desc">자동차는 결코 단순히 타고 다니는 수단에 그치는 것이 아닙니다.<br>외형, 색상, 성능, 감성, 시대 등을 담고 있으며​<br>누군가의 가슴을 떨리게 하고 원동력이 되며 꿈과 로망, 목표까지 담고 있습니다.</p>
+              <p class="textset-desc">전 금속공예를 기반으로 차에서 영감을 받으며<br>자동차에 대한 애정을 제품으로 디자인하고 제작하여 표현합니다.</p>
+              <a class="textset-link btnset btnset-mono" href="javascript:void(0)">View more</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [E]hooms-N4 -->
+    <!-- [S]hooms-N6 -->
+    <div class="hooms-N6" data-bid="HPm3ybfmzh" id="">
+      <div class="contents-container container-md">
+        <div class="contents-left">
+          <div class="textset textset-h2"><span class="textset-name">Product</span>
+            <h2 class="textset-tit" style="font-size: 58px;">Friesian​ /​ 프리지안</h2>
+          </div>
+          <div class="textset">
+            <p class="textset-desc">고대 로마 제국 시대부터 중세 전쟁기에도 중요한 역할을 해왔던 말의 품종으로, 체력적으로 뛰어나며 충성심이 강하고 검은색의 웅장하고 우아한 갈기가 특징.</p><a class="textset-link aboutus-imgitem btnset btnset-mono" href="javascript:void(0)">View more</a>
+          </div>
+        </div>
+        <div class="contents-right"><img th:src="@{/static/images/friesian.png}" alt=""></div>
+      </div>
+    </div>
+    <!-- [E]hooms-N6 -->
+    <!-- [S]hooms-N5 -->
+    <div class="hooms-N5" data-bid="CLm3ybfN2Q" id="">
+      <div class="contents-container container-md">
+        <div class="contents-left"><img th:src="@{/static/images/brantgoose.png}" alt=""></div>
+        <div class="contents-right">
+          <div class="textset textset-h2"><span class="textset-name">Product</span>
+            <h2 class="textset-tit" style="font-size: 48px;">Brant Goose / 흑기러기</h2>
+          </div>
+          <div class="textset">
+            <p class="textset-desc">목 부분에 흰 띠를 가진 검은색의 기러기로 철새의 한 종류. 높은 하늘 위로 V자를 그리며 날아가는 철새들을 보면 마음이 가라앉기도 한다. 평범하고 일상적일 수 있으나 멸종위기 2급이며, 자세히 보면 아름다운 외형을 가진 흑기러기는 우리와 닮았다.</p><a class="textset-link aboutus-imgitem btnset btnset-mono" href="javascript:void(0)">View more</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [E]hooms-N5 -->
+    <!-- [S]hooms-N7 -->
+    <div class="hooms-N7" data-bid="rEM3YBfN57" id="">
+      <div class="contents-inner">
+        <div class="contents-container container-md">
+          <div class="textset textset-h2"><span class="textset-name">Shop</span>
+            <h2 class="textset-tit">Dom's Studio<br>SELECTION</h2>
+          </div>
+          <div class="contents-swiper">
+            <div class="swiper-wrapper contents-wrapper">
+              <div class="swiper-slide contents-slide"><a class="contents-link" href="javascript:void(0)">
+                  <div class="contents-productimg"><img th:src="@{/static/images/goods1.png}" alt=""></div>
+                  <div class="contents-price">Clear Blue Color Set<span>2,000,000</span></div>
+                </a></div>
+              <div class="swiper-slide contents-slide"><a class="contents-link" href="javascript:void(0)">
+                  <div class="contents-productimg"><img th:src="@{/static/images/goods2.png}" alt=""></div>
+                  <div class="contents-price">Clear Blue Color Set<span>2,000,000</span></div>
+                </a></div>
+              <div class="swiper-slide contents-slide"><a class="contents-link" href="javascript:void(0)">
+                  <div class="contents-productimg"><img th:src="@{/static/images/goods3.png}" alt=""></div>
+                  <div class="contents-price">Clear Blue Color Set<span>2,000,000</span></div>
+                </a></div>
+            </div>
+          </div>
+          <div class="swiper-pagination container-md"></div>
+        </div>
+      </div>
+    </div>
+    <!-- [E]hooms-N7 -->
+    <!-- [S]hooms-N8 -->
+    <div class="hooms-N8" data-bid="itm3YBFna4" id="">
+      <div class="contents-inner">
+        <div class="contents-container container-md">
+          <div class="textset textset-h2">
+            <h2 class="textset-tit">MORE Dom's Studio</h2>
+          </div>
+          <div class="contents-cardgroup">
+            <div class="cardset">
+              <figure class="cardset-figure">
+                <img class="cardset-img" th:src="@{/static/images/domlogo1.jpg}" alt="">
+              </figure>
+              <div class="cardset-body">
+                <h5 class="cardset-tit">VISIT US</h5>
+                <p class="cardset-desc">Dom' Studio 매장에 방문하셔서 다양한 금속 공예 작품을 직접 경험해보세요. 친절한 오프라인 직원이 고객님께 딱 맞는 작품을 찾을 수 있도록 정성껏 상담해드립니다. </p>
+              </div>
+            </div>
+            <div class="cardset">
+              <figure class="cardset-figure">
+                <img class="cardset-img" th:src="@{/static/images/domlogo2.jpg}" alt="">
+              </figure>
+              <div class="cardset-body">
+                <h5 class="cardset-tit">Dom' Studio AN INTERIOR DESIGNER</h5>
+                <p class="cardset-desc">
+                </p>
+                <p data-pm-slice="0 0 []">Dom's Studio - 당신의 공간에 영감을 더하고 개성을 담아냅니다. 당신의 상상을 디자인과 조화로 완성해드립니다.</p>
+                <p></p>
+              </div>
+            </div>
+            <div class="cardset">
+              <figure class="cardset-figure">
+				<img class="cardset-img" th:src="@{/static/images/domlogo1.jpg}" alt="">
+              </figure>
+              <div class="cardset-body">
+                <h5 class="cardset-tit">CONTACT US</h5>
+                <p class="cardset-desc"> Dom's Studio와 함께 특별한 순간을 만들어보세요. 문의 사항이 있으시면 언제든지 연락주세요. 당신의 이야기를 기다리고 있습니다. </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [E]hooms-N8 -->
+  </main>
+  <!-- [S]hooms-N57 -->
+  <footer class="hooms-N57" data-bid="Ppm3yBfNek">
+    <div class="footer-container container-lg">
+      <div class="footer-top">
+        <h1 class="footer-logo">
+          <a href="javascript:void(0)">
+			<img th:src="@{/static/images/pollogo.png}" alt="로고">
+          </a>
+        </h1>
+        <ul class="footer-menulist">
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>이용약관</span>
+            </a>
+          </li>
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>개인정보처리방침</span>
+            </a>
+          </li>
+          <li class="footer-menuitem">
+            <a href="../logout">
+              <span>로그아웃</span>
+            </a>
+          </li>
+          
+          <th:block th:if="${session.auth == null or session.auth.grade == 'emp' and session.auth.grade != 'mem'}">
+          <li class="footer-menuitem">
+            <a href="employee/employeeWrite">
+              <span>직원가입</span>
+            </a>
+          </li>
+        </ul>
+        <ul class="footer-snslist">
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_instagram_lightgrey.svg}" alt="인스타그램">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_youtube_lightgrey.svg}" alt="유튜브">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_facebook_lightgrey.svg}" alt="페이스북">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_kakao_lightgrey.svg}" alt="카카오톡">
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-txt">
+          <p> 서울시 금천구 벚꽃로36길 30 가산 KS타워 1409호 </p>
+          <p>
+            <span>T. 010-45**-41**</span>
+            <span>****@naver.com</span>
+          </p>
+        </div>
+        <div class="footer-txt">
+          <p>2022 BY TEMPLATEHOUSE. ALL RIGHTS RESEVED</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- [E]hooms-N57 -->
+  <script th:src="@{/static/js/setting.js}"></script>
+<script th:src="@{/static/js/plugin.js}"></script>
+<script th:src="@{/static/js/template.js}"></script>
+<script th:src="@{/static/js/common.js}"></script>
+<script th:src="@{/static/js/script.js}"></script>
+
+</body>

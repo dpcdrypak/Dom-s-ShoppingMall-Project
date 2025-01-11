@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="imagetoolbar" content="no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="title" content="웹사이트">
+  <meta name="description" content="웹사이트입니다.">
+  <meta name="keywords" content="키워드,키워드,키워드">
+  <meta property="og:title" content="웹사이트">
+  <meta property="og:description" content="웹사이트입니다">
+  <meta property="og:image" content="https://웹사이트/static/images/opengraph.png">
+  <meta property="og:url" content="https://웹사이트">
+  <title>주문 리스트 | mem</title>
+    <link rel="stylesheet" th:href="@{/static/css/setting.css}">
+  <link rel="stylesheet" th:href="@{/static/css/plugin.css}">
+  <link rel="stylesheet" th:href="@{/static/css/template.css}">
+  <link rel="stylesheet" th:href="@{/static/css/common.css}">
+  <link rel="stylesheet" th:href="@{/static/css/style.css}">
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#btn").click(function(){
+		opener.location.reload();
+		window.self.close();
+	});
+});
+window.onunload = function() {
+	if(window.opener && !window.opener.closed){
+		window.opener.location.reload();
+	}
+};
+</script> 
+</head>
+<body>
+
+<header class="hooms-N54" data-bid="fPM3YbfMi9" id="">
+    <div class="header-inner">
+      <div class="header-container container-lg">
+        <div class="header-left">
+          <h1 class="header-title">
+            <a class="header-logo" th:href="@{/}" title="hooms"></a>
+          </h1>
+        </div>
+        <div class="header-center">
+          <ul class="header-gnblist">
+            
+            
+      
+    </div>
+    <div class="header-dim"></div>
+  </header>
+  <!-- [E]hooms-N55 -->
+  <main class="th-layout-main ">
+    <!-- [S]hooms-N43 -->
+    <div class="hooms-N43" data-bid="VNm3zgqfPv">
+      <div class="contents-inner">
+        <div class="contents-container container-md">
+          <div class="textset textset-h2"><br><br>
+            <h2 class="textset-tit">구매 상품 정보</h2>
+            <p class="textset-desc">배송/결제 정보를 정확히 입력해주세요.</p>
+          </div>
+          <div class="tableset tableset-receipt tableset-text-top">
+            <table class="tableset-table table">
+              <colgroup>
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+              </colgroup>
+              <thead class="thead-light thead-border-top">
+                <tr>
+                  <th scope="col">상품정보</th>
+                  <th scope="col">제품가격</th>
+                  <th scope="col">주문수량</th>
+                </tr>
+              </thead>
+              <tbody>
+              <th:block th:each=" dto : ${list[0].purchaseListGoodsDTOs}">
+              
+                <tr>
+                  <td class="tableset-figure td-border-bottom">
+                    <figure>
+                      <img width="30" th:src="|/static/upload/${dto.goodsDTO.goodsMainStoreImage}|"/>
+                    </figure>
+                    <div class="tableset-group">
+				<h5 class="p1">
+				    [[${dto.goodsDTO.goodsName}]]<br><br>
+				    <span style="color: gray;">[[${#strings.replace(dto.goodsDTO.goodsContents,newLineChar,'&lt;br /&gt;')}]]</span>
+				</h5>
+                          
+                       
+                    </div>
+                  </td>
+                  <td>
+                    <strong>제품가격</strong> [[${dto.purchaseListDTO.totalPrice}]]
+                  </td>
+                  <td class="td-border-bottom">
+                    <strong>주문수량</strong> [[${dto.purchaseListDTO.purchaseQty}]]
+                  </td>
+                  
+                </tr>
+               </th:block>
+              </tbody>
+              
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [E]hooms-N43 -->
+    <!-- [S]hooms-N44 -->
+    <div class="hooms-N44" data-bid="BCM3zGqfSY">
+      <div class="contents-inner">
+        <div class="contents-container container-md">
+          <div class="textset">
+            <h2 class="textset-tit">주문 내용</h2>
+          </div>
+          <div class="contents-form">
+            <div class="contents-form-top">
+              <div class="inputset inputset-lg inputset-label">
+                <label>
+                  <h6 class="inputset-tit"> 주문날짜
+                  </h6>
+					[[${#dates.format(list[0].purchaseDTO.purchaseDate,'yyyy-MM-dd')}]]
+				</label>
+                <label>
+                  <h6 class="inputset-tit"> 주문번호
+                  </h6>
+                  [[${list[0].purchaseDTO.purchaseNum}]]
+                </label>
+              </div>
+              <div class="inputset inputset-lg inputset-label">
+                <label>
+                  <h6 class="inputset-tit"> 배송지
+                  </h6>
+                  [[${list[0].purchaseDTO.deliveryAddr + ' ' + list[0].purchaseDTO.deliveryAddrDetail}]]
+                </label>
+                <label>
+                  <h6 class="inputset-tit"> 주문금액
+                  </h6>
+                  [[${list[0].purchaseDTO.purchasePrice}]]
+                </label>
+              </div>
+              <div class="inputset inputset-lg inputset-label">
+                <label>
+                  <h6 class="inputset-tit"> 받는사람
+                  </h6>
+					[[${list[0].purchaseDTO.deliveryName}]]
+				</label>
+                <label>
+                  <h6 class="inputset-tit"> 연락처
+                  </h6>
+                  [[${list[0].purchaseDTO.deliveryPhone}]]
+                </label>
+              </div>
+              <div class="inputset inputset-lg inputset-label">
+                <label>
+                  <h6 class="inputset-tit"> 
+                  </h6>
+				</label>
+                <label>
+                  <h6 class="inputset-tit"> 주문메세지
+                  </h6>
+                  [[${list[0].purchaseDTO.message}]]
+                </label>
+              </div><br>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 결제 내용 -->
+    <div class="hooms-N44" data-bid="BCM3zGqfSY" >
+      <div class="contents-inner">
+        <div class="contents-container container-md">
+          <div class="textset">
+            <h2 class="textset-tit">결제 내용</h2>
+          </div>
+          <div class="contents-form">
+            <div class="contents-form-top" th:if="${list[0].paymentDTO.appldate != null}">
+              <div class="inputset inputset-lg inputset-label">
+                <label>
+                  <h6 class="inputset-tit"> 결제금액
+                  </h6>
+					[[${list[0].paymentDTO.totalprice}]]
+				</label>
+                <label>
+                  <h6 class="inputset-tit"> 결제번호
+                  </h6>
+                  <span th:if="${list[0].paymentDTO.confirmnumber != null}">
+						[[${list[0].paymentDTO.confirmnumber}]]
+					</span>
+					 <span th:if="${list[0].paymentDTO.confirmnumber == null}">
+						현금결제
+					</span>
+					<br />
+                </label>
+              </div>
+              <div class="inputset inputset-lg inputset-label">
+                <label>
+                  <h6 class="inputset-tit"> 카드번호
+                  </h6>
+                  [[${list[0].paymentDTO.cardnum}]]
+                </label>
+                <label>
+                  <h6 class="inputset-tit"> 결제일
+                  </h6>
+                  [[${list[0].paymentDTO.appltime}]]
+                </label>
+              </div>
+              <br>
+            </div>
+            
+            <div class="contents-form-top" th:if="${list[0].paymentDTO.appldate == null}">
+            <p align="center" class="contents-desc">
+            * 결제 정보가 없습니다.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <!-- [E]hooms-N44 -->
+    <!-- [S]hooms-N45 -->
+    <form action="/delivery/deliveryDelete" method="post"
+			th:if="${list[0].deliveryDTO.deliveryNum != null}">
+    <div class="hooms-N44" data-bid="LEm3ZGqFVt" >
+      <div class="contents-inner">
+          <input type="hidden" name="purchaseNum" th:value="${list[0].purchaseDTO.purchaseNum}">
+        <div class="contents-container container-md" th:if="${list[0].deliveryDTO.deliveryNum != null}">
+          <div class="textset">
+            <h2 class="textset-tit">배송 정보</h2>
+          </div>
+          <div class="contents-form" >
+            <div class="contents-form-top">
+              <div class="inputset inputset-lg inputset-label">
+                <label>
+                  <h6 class="inputset-tit"> 
+                  </h6>
+					<input type="submit" class="btnset btnset-ghost" value="배송정보삭제"/>
+				</label>
+                <label>
+                  <h6 class="inputset-tit"> 송장번호
+                  </h6>
+                  [[${list[0].deliveryDTO.deliveryNum}]]
+					<br />
+                </label>
+              </div>
+              <br>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+    
+    
+	<form action="/delivery/deliveryRegist" method="post"
+			th:if="${list[0].deliveryDTO.deliveryNum == null and list[0].paymentDTO.appldate != null}">
+    <div class="hooms-N44" data-bid="LEm3ZGqFVt" >
+      <div class="contents-inner">
+<input type="hidden" name="purchaseNum" th:value="${list[0].purchaseDTO.purchaseNum}">
+        <div class="contents-container container-md">
+          <div class="textset">
+            <h2 class="textset-tit">배송 정보 입력</h2>
+          </div>
+          <div class="contents-form" >
+            <div class="contents-form-top">
+              <div class="inputset inputset-lg inputset-label">
+                <label>
+                  <h6 class="inputset-tit"> 
+                  </h6>
+					<input type="submit" value="배송정보등록" class="btnset btnset-ghost"/>
+				</label>
+                <label>
+                  <h6 class="inputset-tit"> 송장번호
+                  </h6>
+                  <input type="text" name="deliveryNum" class="inputset-input form-control" required="required"/>
+					<br />
+                </label>
+              </div>
+              <br>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+    
+    
+    <!-- [E]hooms-N45 -->
+  </main>
+  <!-- [S]hooms-N57 -->
+  <footer class="hooms-N57" data-bid="Ppm3yBfNek">
+    <div class="footer-container container-lg">
+      <div class="footer-top">
+        <h1 class="footer-logo">
+          <a href="javascript:void(0)">
+			<img th:src="@{/static/images/pollogo.png}" alt="로고">
+          </a>
+        </h1>
+        <ul class="footer-menulist">
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>이용약관</span>
+            </a>
+          </li>
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>개인정보처리방침</span>
+            </a>
+          </li>
+          <li class="footer-menuitem">
+            <a th:href="@{/logout}">
+              <span>로그아웃</span>
+            </a>
+          </li>
+          
+          <th:block th:if="${session.auth == null or session.auth.grade == 'emp' and session.auth.grade != 'mem'}">
+          <li class="footer-menuitem">
+            <a th:href="@{/employee/employeeWrite}" >
+              <span>직원가입</span>
+            </a>
+          </li>
+        </ul>
+        <ul class="footer-snslist">
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_instagram_lightgrey.svg}" alt="인스타그램">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_youtube_lightgrey.svg}" alt="유튜브">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_facebook_lightgrey.svg}" alt="페이스북">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_kakao_lightgrey.svg}" alt="카카오톡">
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-txt">
+          <p> 서울시 금천구 벚꽃로36길 30 가산 KS타워 1409호 </p>
+          <p>
+            <span>T. 010-45**-41**</span>
+            <span>****@naver.com</span>
+          </p>
+        </div>
+        <div class="footer-txt">
+          <p>2022 BY TEMPLATEHOUSE. ALL RIGHTS RESEVED</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- [E]hooms-N57 -->
+   <script th:src="@{/static/js/setting.js}"></script>
+<script th:src="@{/static/js/plugin.js}"></script>
+<script th:src="@{/static/js/template.js}"></script>
+<script th:src="@{/static/js/common.js}"></script>
+<script th:src="@{/static/js/script.js}"></script>
+</body>
+</html>

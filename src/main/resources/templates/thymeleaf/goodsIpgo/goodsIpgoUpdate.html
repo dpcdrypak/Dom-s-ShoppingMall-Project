@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="imagetoolbar" content="no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="title" content="웹사이트">
+  <meta name="description" content="웹사이트입니다.">
+  <meta name="keywords" content="키워드,키워드,키워드">
+  <meta property="og:title" content="웹사이트">
+  <meta property="og:description" content="웹사이트입니다">
+  <meta property="og:image" content="https://웹사이트/static/images/opengraph.png">
+  <meta property="og:url" content="https://웹사이트">
+  <title>SignUp | 미니프로젝트</title>
+  <link rel="stylesheet" th:href="@{/static/css/setting.css}">
+  <link rel="stylesheet" th:href="@{/static/css/plugin.css}">
+  <link rel="stylesheet" th:href="@{/static/css/template.css}">
+  <link rel="stylesheet" th:href="@{/static/css/common.css}">
+  <link rel="stylesheet" th:href="@{/static/css/style.css}">
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#frm").submit(function(){
+		if($("#ipgoDate").val() == ""){
+			alert("입고일를 입력해주세요.");
+			$("#ipgoDate").focus();
+			return false;
+		}
+		if($("#madeDate").val() == ""){
+			alert("제조일를 입력해주세요.");
+			$("#madeDate").focus();
+			return false;
+		}
+		if($("#ipgoPrice").val() <= 0){
+			alert("금액를 입력해주세요.");
+			$("#ipgoPrice").focus();
+			return false;
+		}
+		if($("#ipgoQty").val() <= 0){
+			alert("수량를 입력해주세요.");
+			$("#ipgoQty").focus();
+			return false;
+		}
+	});
+});
+</script>
+</head>
+
+<body>
+  <!-- [S]hooms-N55 -->
+  <header class="hooms-N54" data-bid="fPM3YbfMi9" id="">
+    <div class="header-inner">
+      <div class="header-container container-lg">
+        <div class="header-left">
+          <h1 class="header-title">
+            <a class="header-logo" th:href="@{/}" title="hooms"></a>
+          </h1>
+        </div>
+        <div class="header-center">
+          <ul class="header-gnblist">
+            
+            
+            <!-- mem으로 로그인 했을때 -->
+            <th:block th:if="${session.auth != null and session.auth.grade == 'mem'}">
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/shopGoods}">
+                <span>SHOP</span>
+              </a>
+            </li>
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/item/cartList}">
+                <span>CART</span>
+              </a>
+            </li>
+           
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/item/wishList}">
+                <span>Wish</span>
+              </a>
+            </li>
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/purchase/orderList}">
+                <span>Order</span>
+              </a>
+            </li>
+            </th:block>
+            
+            <!-- emp로 로그인 했을때 -->
+            <th:block th:if="${session.auth != null and session.auth.grade == 'emp'}">
+            <li class="header-gnbitem" id="product">
+	              <a class="header-gnblink" href="javascript:void(0)">
+	                <span>PRODUCT</span>
+	              </a>
+	              <ul class="header-sublist">
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/goods/goodsWrite}">
+	                    <span>상품 등록</span>
+	                  </a>
+	                </li>
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/goods/goodsList}">
+	                    <span>상품 리스트</span>
+	                  </a>
+	                </li>
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/goods/goodsIpgo}">
+	                    <span>상품 입고 등록</span>
+	                  </a>
+	                </li>
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/goods/goodsIpgoList}">
+	                    <span>상품 입고 현황</span>
+	                  </a>
+	                </li>
+	              </ul>
+	            </li>
+	            
+	            <li class="header-gnbitem">
+              <a class="header-gnblink" href="javascript:void(0)">
+                <span>USER LIST</span>
+              </a>
+              <ul class="header-sublist">
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/memberJoin/memberList}">
+	                    <span>회원 리스트</span>
+	                  </a>
+	                </li>
+	                <li class="header-subitem">
+	                  <a class="header-sublink" th:href="@{/employee/employeeList}">
+	                    <span>직원 리스트</span>
+	                  </a>
+	                </li>
+	                
+	              </ul>
+            </li>
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/purchase/purchaseList}">
+                <span>PURCHASE</span>
+              </a>
+            </li>
+           
+            
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/inquire/goodsQuestion}">
+                <span>INQUIRE</span>
+              </a>
+            </li>
+            
+            </th:block>
+            
+            <!-- 로그인 안했을때 -->
+            <th:block th:if="${session.auth == null}">
+            <li class="header-gnbitem">
+              <a class="header-gnblink" th:href="@{/shopGoods}">
+                <span>SHOP</span>
+              </a>
+            </li>
+            </th:block>
+            
+          </ul>
+        </div>
+        
+        <div class="header-right">
+          <div class="header-utils">
+    		<th:block th:if="${session.auth != null and session.auth.grade == 'mem'}">
+			<a th:href="@{/myPage/memberMyPage}" class="btn-profile header-utils-btn" title="profile"></a>
+          </th:block>
+          <th:block th:if="${session.auth != null and session.auth.grade == 'emp'}">
+			<a th:href="@{/myPage/employeeMyPage}" class="btn-profile header-utils-btn" title="profile"></a>
+          </th:block>
+          <th:block th:if="${session.auth == null}">
+          	<a th:href="@{/login}" class="btn-profile header-utils-btn" title="profile"></a>
+          </th:block>
+            <button class="btn-menu header-utils-btn" title="menu"></button>
+            <button class="btn-close header-utils-btn" title="close"></button>
+          </div>
+        </div>
+        <div class="header-search-form">
+          <div class="inputset inputset-line">
+            <button class="icon-right icon-search btn" type="button" aria-label="아이콘">
+            </button>
+            <input type="text" class="inputset-input form-control" placeholder="검색어를 입력해주세요." aria-label="내용">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    <!-- mem으로 로그인 했을때 -->
+   <th:block th:if="${session.auth != null and session.auth.grade == 'mem'}">
+    <div class="header-fullmenu-dark fullmenu-top">
+      <div class="fullmenu-head container-lg">
+        <h4 class="fullmenu-title">
+          <a class="fullmenu-logo" href="javascript:void(0)" title="hooms"></a>
+        </h4>
+        <button class="fullmenu-close"></button>
+      </div>
+      <div class="fullmenu-wrapper container-lg">
+        <ul class="fullmenu-gnblist">
+           <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/shopGoods}">
+              <span>SHOP</span>
+            </a>
+          </li>
+          
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/item/cartList}">
+              <span>CART</span>
+            </a>
+          </li>
+          
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/item/wishList}">
+              <span>WISH</span>
+            </a>
+          </li>
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/purchase/orderList}">
+              <span>ORDER</span>
+            </a>
+          </li>
+      </div>
+        </ul>
+      </div>
+      </th:block>
+      
+      <!-- emp로 로그인 했을때 -->
+    	<th:block th:if="${session.auth != null and session.auth.grade == 'emp'}">
+      <div class="header-fullmenu-dark fullmenu-top">
+      <div class="fullmenu-head container-lg">
+        <h4 class="fullmenu-title">
+          <a class="fullmenu-logo" href="javascript:void(0)" title="hooms"></a>
+        </h4>
+        <button class="fullmenu-close"></button>
+      </div>
+      <div class="fullmenu-wrapper container-lg">
+        <ul class="fullmenu-gnblist">
+           <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/shopGoods}">
+              <span>PRODUCT</span>
+            </a>
+          </li>
+          
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/purchase/purchaseList}">
+              <span>PURCHASE</span>
+            </a>
+          </li>
+          
+          <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" th:href="@{/inquire/goodsQuestion}">
+              <span>INQUIRE</span>
+            </a>
+          </li>
+          
+      </div>
+        </ul>
+      </div>
+      </th:block>
+      
+      <!-- 로그인 안했을때 -->
+    	<th:block th:if="${session.auth == null}">
+      <div class="header-fullmenu-dark fullmenu-top">
+      <div class="fullmenu-head container-lg">
+        <h4 class="fullmenu-title">
+          <a class="fullmenu-logo" href="javascript:void(0)" title="hooms"></a>
+        </h4>
+        <button class="fullmenu-close"></button>
+      </div>
+      <div class="fullmenu-wrapper container-lg">
+        <ul class="fullmenu-gnblist">
+           <li class="fullmenu-gnbitem">
+            <a class="fullmenu-gnblink" href="shopGoods">
+              <span>SHOP</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      </th:block>
+      
+    </div>
+    <div class="header-dim"></div>
+  </header>
+  <!-- [E]hooms-N55 -->
+  <main class="th-layout-main ">
+    <form action="goodsIpgoModify" method="post" id="frm">
+    
+    <!-- [S]hooms-N53 -->
+    <div class="hooms-N53" data-bid="nvm3zH37hv">
+      <div class="contents-inner">
+        <div class="contents-container">
+          <div class="textset textset-h2">
+            <h2 class="textset-tit">입고 수정</h2>
+          </div>
+          <div class="contents-form">
+            <div class="contents-form-bottom">
+            
+              <div class="inputset inputset-lg inputset-label">
+                <label>
+                  <h6 class="inputset-tit"> 입고번호
+                  </h6>
+                  <input type="text" name="goodsIpgoNum" th:value="${dto.goodsIpgoDTO.goodsIpgoNum }"class="inputset-input form-control" readonly="readonly">
+                </label>
+              </div>       
+              <div class="inputset inputset-lg inputset-label">
+                <label>
+                  <h6 class="inputset-tit"> 상품번호
+                  </h6>
+                  <input type="text" name="goodsNum" readonly="readonly" th:value="${dto.goodsIpgoDTO.goodsNum }" class="inputset-input form-control">
+                </label>
+              </div>     
+              <div class="inputset inputset-lg inputset-label">
+                <label>
+                  <h6 class="inputset-tit"> 입고일
+                  </h6>
+                  <input type="date" name="ipgoDate" id="ipgoDate"
+						th:value="${#dates.format(dto.goodsIpgoDTO.ipgoDate,'yyyy-MM-dd')}" class="inputset-input form-control">
+                </label>
+                
+              </div>
+              <div class="inputset inputset-lg inputset-label">
+			  <label>
+			    <h6 class="inputset-tit">입고 수량</h6>
+			    <div class="inputset-wrapper">
+                  <input type="number" name="ipgoQty" id="ipgoQty" th:value="${dto.goodsIpgoDTO.ipgoQty}" min="0" class="inputset-input form-control">
+			    </div>
+			  </label>
+			</div><br>
+              <div class="inputset inputset-lg inputset-label">
+                <label>
+                  <h6 class="inputset-tit"> 제조일
+                  </h6>
+                  <input type="datetime-local" name="madeDate"  id="madeDate"
+						th:value="${#dates.format(dto.goodsIpgoDTO.madeDate,'yyyy-MM-dd HH:mm:ss')}" class="inputset-input form-control" >
+                </label>
+              </div><br>
+              <div class="inputset inputset-lg inputset-label">
+                <label>
+                  <h6 class="inputset-tit"> 가격
+                  </h6>
+                  <input type="number" name="ipgoPrice" id="ipgoPrice" th:value="${dto.goodsIpgoDTO.ipgoPrice }" min = "0" class="inputset-input form-control" >
+                </label>
+              </div><br>
+                       
+            </div>
+                           
+            
+          </div>
+          
+          <input type="submit" class="btnset btnset-lg contents-submit" value="수정완료">
+          
+        </div>
+      </div>
+    </div>
+    <!-- [E]hooms-N53 -->
+    </form>
+  </main>
+  <!-- [S]hooms-N57 -->
+  <footer class="hooms-N57" data-bid="Ppm3yBfNek">
+    <div class="footer-container container-lg">
+      <div class="footer-top">
+        <h1 class="footer-logo">
+          <a href="javascript:void(0)">
+			<img th:src="@{/static/images/pollogo.png}" alt="로고">
+          </a>
+        </h1>
+        <ul class="footer-menulist">
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>이용약관</span>
+            </a>
+          </li>
+          <li class="footer-menuitem">
+            <a href="javascript:void(0)">
+              <span>개인정보처리방침</span>
+            </a>
+          </li>
+          <li class="footer-menuitem">
+            <a th:href="@{/logout}">
+              <span>로그아웃</span>
+            </a>
+          </li>
+          
+          <th:block th:if="${session.auth == null or session.auth.grade == 'emp' and session.auth.grade != 'mem'}">
+          <li class="footer-menuitem">
+            <a th:href="@{/employee/employeeWrite}" >
+              <span>직원가입</span>
+            </a>
+          </li>
+        </ul>
+        <ul class="footer-snslist">
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_instagram_lightgrey.svg}" alt="인스타그램">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_youtube_lightgrey.svg}" alt="유튜브">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_facebook_lightgrey.svg}" alt="페이스북">
+            </a>
+          </li>
+          <li class="footer-snsitem">
+            <a class="footer-snslink" href="javascript:void(0)">
+              <img th:src="@{/static/icons/ico_kakao_lightgrey.svg}" alt="카카오톡">
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-txt">
+          <p> 서울시 금천구 벚꽃로36길 30 가산 KS타워 1409호 </p>
+          <p>
+            <span>T. 010-45**-41**</span>
+            <span>****@naver.com</span>
+          </p>
+        </div>
+        <div class="footer-txt">
+          <p>2022 BY TEMPLATEHOUSE. ALL RIGHTS RESEVED</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- [E]hooms-N57 -->
+   <script th:src="@{/static/js/setting.js}"></script>
+<script th:src="@{/static/js/plugin.js}"></script>
+<script th:src="@{/static/js/template.js}"></script>
+<script th:src="@{/static/js/common.js}"></script>
+<script th:src="@{/static/js/script.js}"></script>
+
+</body>
